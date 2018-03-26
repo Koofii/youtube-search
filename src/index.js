@@ -50,12 +50,12 @@ var headers = {
     'Authorization': `bearer ${$YOUTUBE_KEY}`
 }
 
-function utubeSearch(options, callback){
-    fetch('https://www.googleapis.com/youtube/v3/search?q=' + options, {headers})
-    .then(response => response.json())
-    .then(data => callback(data))
-    .catch(error => console.log(error));
-}
+// function utubeSearch(options, callback){
+//     fetch('https://www.googleapis.com/youtube/v3/search?q=' + options, {headers})
+//     .then(response => response.json())
+//     .then(data => callback(data))
+//     .catch(error => console.log(error));
+// }
 
 $('#videoTitle').on('keyup', e => {
     const titleToSearch = e.target.value;
@@ -67,6 +67,8 @@ $('#videoTitle').on('keyup', e => {
     }
     youtubeSearch($YOUTUBE_KEY, $options)
         .then(function(data){
-            console.log(data)
+            let searchRes = data.items;
+            console.log(searchRes);
         })
+        
 });
