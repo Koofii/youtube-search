@@ -45,8 +45,28 @@ const youtubeSearch = require('youtube-api-v3-search');
 var _ = require('lodash');
 var $ = require("jquery");
 
+var headers = {
+    'Accept': 'application/json',
+    'Authorization': `bearer ${$YOUTUBE_KEY}`
+}
+
+function utubeSearch(options, callback){
+    fetch('https://www.googleapis.com/youtube/v3/search?q=' + options, {headers})
+    .then(response => response.json())
+    .then(data => callback(data))
+    .catch(error => console.log(error));
+}
+
 $('#videoTitle').on('keyup', e => {
     const titleToSearch = e.target.value;
-
-    // TODO: Invoke the (debounced) search function with the title to search.
-})
+    const $options = {
+        maxResults: '10',
+        q: titleToSearch,
+        part: 'snippet',
+        type: 'video'
+    }
+    youtubeSearch($YOUTUBE_KEY, $options)
+        .then(function(data){
+            console.log(data)
+        })
+});
