@@ -39,7 +39,7 @@
 // ...
 // API_KEY: AIzaSyBJToz8rLZV26korxQsfEPV3u6uUPNhP1Q
 
-const $YOUTUBE_KEY = "AIzaSyBJToz8rLZV26korxQsfEPV3u6uUPNhP1Q"
+const $YOUTUBE_KEY = "AIzaSyBJToz8rLZV26korxQsfEPV3u6uUPNhP1Q";
 const youtubeSearch = require('youtube-api-v3-search');
 
 var _ = require('lodash');
@@ -50,14 +50,10 @@ var headers = {
     'Authorization': `bearer ${$YOUTUBE_KEY}`
 }
 
-// function utubeSearch(options, callback){
-//     fetch('https://www.googleapis.com/youtube/v3/search?q=' + options, {headers})
-//     .then(response => response.json())
-//     .then(data => callback(data))
-//     .catch(error => console.log(error));
-// }
+$('#videoTitle').on('keyup', _.debounce(search, 300));
 
-$('#videoTitle').on('keyup', e => {
+function search (e){
+    $("#videos").html("");
     const titleToSearch = e.target.value;
     const $options = {
         maxResults: '10',
@@ -68,7 +64,12 @@ $('#videoTitle').on('keyup', e => {
     youtubeSearch($YOUTUBE_KEY, $options)
         .then(function(data){
             let searchRes = data.items;
-            console.log(searchRes);
+            let result = searchRes.map(m => {
+                return m.id.videoId
+            })            
+            for (var i = 0; i < result.length; i++){
+                let video = result[i];
+                $("#videos").append(`<iframe src="https://www.youtube.com/embed/${video}">`)
+            }
         })
-        
-});
+}
